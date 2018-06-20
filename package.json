@@ -1,0 +1,21 @@
+{
+  "name": "uglify",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/parser": "^7.0.0-beta.51",
+    "escodegen": "^1.10.0",
+    "esprima": "^4.0.0",
+    "estraverse": "^4.2.0",
+    "uglify-es": "^3.3.9"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.51"
+  }
+}
