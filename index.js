@@ -1,6 +1,4 @@
-var esprima = require('esprima')
-const escodegen = require('escodegen')
-const estraverse = require('estraverse')
+
 const fs = require('fs')
 const BabelParser = require('@babel/parser')
 const NameDic = require('./geetest/nameDic')
@@ -523,14 +521,14 @@ const visitor = {
     })
     // curNodeArr = curNodeArr.push(nodes)
     }
-fs.readFile('./geetest/decodedTestResult4.js',{encoding:"utf-8"}, (err, data) => {
+fs.readFile('./source/fullpage.js',{encoding:"utf-8"}, (err, data) => {
     var result = babel.transform(data, {
         "compact": false,
         plugins: [{
             visitor: visitor
         }]
     });
-    fs.writeFile('./geetest/decodedTestResult-delRedudant.js', result.code, err => {
+    fs.writeFile('./result/fullpage.js', result.code, err => {
         console.log('fini')
     })
     // console.log(result.code)

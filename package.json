@@ -6,10 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "js-transform": "./bin/index.js"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@babel/parser": "^7.0.0-beta.51",
+    "commander": "^2.15.1",
     "escodegen": "^1.10.0",
     "esprima": "^4.0.0",
     "estraverse": "^4.2.0",
