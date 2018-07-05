@@ -75,27 +75,7 @@ const redudantExpressionVisitor = {
     LogicalExpression: removeRedudantLogic
 }
 function visitorFn (path){
-    let redudantVars = []
-    path.traverse({
-        enter: function(path) {
-            if (BabelTypes.isLogicalExpression(path.node)) {
-              removeRedudantLogic(path, redudantVars)
-            }
-          
-        }
-    })
-    path.traverse({
-        enter: function(path) {
-            if (BabelTypes.isVariableDeclarator(path.node)) {
-              if (redudantVars.indexOf(path.node.id.name) > -1){
-                  path.remove()
-              }
-            }
-        }
-    })
-    // console.log(redudantVars)
-    
-return
+
     let node = path.node
     let functionBody = node.body&& node.body.body
     let ifTryStat = false
@@ -271,121 +251,7 @@ return
     }
     // path.traverse({FunctionDeclaration: visitorFn})
   }
-  function removeRedudantLogic(path, arr) {
-    // console.log(path)
-    let node = path.node
-    if (node.operator !== "&&") {return}
-    let isLeft = testPattern(node.left)
-    let isRight = testPattern(node.right)
-    if (!isLeft) {
-        isLeft = testPattern2(node.left)
-        
-    }
-    if (!isRight) {
-        isRight = testPattern2(node.right)
-    }
-    if (isLeft) {
-        arr.push(isLeft)
-        path.get('left').remove()
-    }
-    if (isRight) {
-        arr.push(isRight)
-        path.get('right').remove()
-    }
-  }
-  function testPattern(node) {
-      if (!BabelTypes.isBinaryExpression(node) || node.operator !== "==") {
-          return false
-      }
-      let numerical = []
-      let binary = []
-      
-      if (BabelTypes.isNumericLiteral(node.left)){
-        numerical.push(node.left)
-      }
-      if (BabelTypes.isNumericLiteral(node.right)) {
-        numerical.push(node.right)
-      }
-      if (BabelTypes.isBinaryExpression(node.left)) {
-        binary.push(node.left)
-      }
-      if (BabelTypes.isBinaryExpression(node.right)) {
-        binary.push(node.right)
-      }
-      if (numerical.length !==1 || binary.length!==1) {
-          return false
-      }
-      let testResult = testBinaryExp(binary[0])
-      if (!testResult) {
-          return false
-      } 
-
-      return testResult
-      
-  }
-  function testPattern2(node) {
-    // if (!BabelTypes.isBinaryExpression(node) || node.operator !== "+") {
-    //     return false
-    // }
-    let testResult = testBinaryExp2(node)
-    if (!testResult) {
-        return false
-    } 
-
-    return testResult
-  }
-  function testBinaryExp(node) {
-    if (!BabelTypes.isBinaryExpression(node.left) || !BabelTypes.isNumericLiteral(node.right) || node.operator !== "%") {
-        return false
-    }
-    let nextNode = node.left
-    if (!BabelTypes.isBinaryExpression(nextNode.left) || !BabelTypes.isIdentifier(nextNode.right) || nextNode.operator !== "*"){
-        return false
-    }
-    let rightId = nextNode.right.name
-    nextNode = nextNode.left
-    if (!BabelTypes.isIdentifier(nextNode.left) || !BabelTypes.isBinaryExpression(nextNode.right) || nextNode.operator !== "*") {
-       return false
-    }
-    let leftId = nextNode.left.name
-    if (rightId!==leftId) {
-        return false
-    }
-    nextNode = nextNode.right
-    if (!BabelTypes.isIdentifier(nextNode.left) || !BabelTypes.isNumericLiteral(nextNode.right) || nextNode.operator !== "+") {
-        return false
-     }
-     let lastId = nextNode.left.name
-     if (lastId!==leftId) {
-         return false
-     }
-     return lastId
-
-}
-  function testBinaryExp2(node) {
-    if (!BabelTypes.isBinaryExpression(node.left) || !BabelTypes.isNumericLiteral(node.right) || node.operator !== "+") {
-        return false
-    }
-    let nextNode = node.left
-    if (!BabelTypes.isBinaryExpression(nextNode.left) || !BabelTypes.isNumericLiteral(nextNode.right) || nextNode.operator !== "%"){
-        return false
-    }
-    nextNode = nextNode.left
-    if (!BabelTypes.isIdentifier(nextNode.left) || !BabelTypes.isBinaryExpression(nextNode.right) || nextNode.operator !== "*") {
-       return false
-    }
-    let leftId = nextNode.left.name
-    nextNode = nextNode.right
-    if (!BabelTypes.isIdentifier(nextNode.left) || !BabelTypes.isNumericLiteral(nextNode.right) || nextNode.operator !== "+") {
-        return false
-     }
-     let lastId = nextNode.left.name
-     if (lastId!==leftId) {
-         return false
-     }
-     return lastId
-
-}
+ 
 const visitor = {
     FunctionDeclaration: visitorFn,
     FunctionExpression:visitorFn,
