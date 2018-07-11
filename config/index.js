@@ -1,6 +1,6 @@
 const config = {
-    baseFuncName: 'p3qq',
-    nameDicKey: 'D4Y',
-    nameSpaceKey: 'L3V'
+    baseFuncName: 'f1gg',
+    nameDicKey: 'D46',
+    nameSpaceKey: 'N7i'
 }
 module.exports = config
